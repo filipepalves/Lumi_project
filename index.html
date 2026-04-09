@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Missão Lumi — A aprendizagem como aventura</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --lilas:       #C9B8E8;
+      --lilas-deep:  #9B7FCC;
+      --lilas-soft:  #EDE6F8;
+      --pessego:     #F5C5A3;
+      --pessego-soft:#070301;
+      --branco:      #FEFCFA;
+      --texto:       #3D2F4A;
+      --texto-suave: #7A6585;
+      --radius:      20px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--branco);
+      color: var(--texto);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 4rem;
+      background: rgba(254,252,250,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,184,232,0.2);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--lilas-deep);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .nav-logo span { font-style: italic; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--texto-suave);
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--lilas-deep); }
+    .nav-cta {
+      background: var(--lilas-deep);
+      color: white !important;
+      padding: 0.55rem 1.4rem;
+      border-radius: 50px;
+      transition: background 0.3s, transform 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--texto) !important; transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 8rem 4rem 4rem;
+      gap: 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background blobs */
+    .hero::before {
+      content: '';
+      position: absolute; top: -100px; right: -100px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--lilas-soft) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+    .hero::after {
+      content: '';
+      position: absolute; bottom: -80px; left: -80px;
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, var(--pessego-soft) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: drift 10s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(30px, 20px) scale(1.05); }
+    }
+
+    .hero-text { position: relative; z-index: 2; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: var(--lilas-soft);
+      color: var(--lilas-deep);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.6s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1.15;
+      color: var(--texto);
+      margin-bottom: 1.5rem;
+      opacity: 0; animation: fadeUp 0.6s 0.4s forwards;
+    }
+    .hero-title em {
+      font-style: italic;
+      color: var(--lilas-deep);
+    }
+
+    .hero-sub {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--texto-suave);
+      max-width: 480px;
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+      opacity: 0; animation: fadeUp 0.6s 0.6s forwards;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp 0.6s 0.8s forwards;
+    }
+
+    .btn-primary {
+      background: var(--lilas-deep);
+      color: white;
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.95rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(155,127,204,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(155,127,204,0.45); }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--texto);
+      padding: 0.9rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 2px solid var(--lilas);
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--lilas-deep); color: var(--lilas-deep); }
+
+    /* Hero visual */
+    .hero-visual {
+      position: relative; z-index: 2;
+      display: flex; justify-content: center; align-items: center;
+      opacity: 0; animation: fadeIn 1s 0.5s forwards;
+    }
+
+    .lumi-card {
+      background: white;
+      border-radius: 32px;
+      padding: 3rem 2.5rem;
+      box-shadow: 0 24px 80px rgba(155,127,204,0.18);
+      text-align: center;
+      position: relative;
+      max-width: 340px;
+      width: 100%;
+    }
+    .lumi-card::before {
+      content: '';
+      position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+      background: linear-gradient(135deg, var(--lilas), var(--pessego));
+      border-radius: 34px;
+      z-index: -1;
+    }
+
+    .lumi-avatar {
+      width: 120px; height: 120px;
+      background: linear-gradient(135deg, var(--lilas-soft), var(--pessego-soft));
+      border-radius: 50%;
+      margin: 0 auto 1.5rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 3.5rem;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
+    }
+
+    .lumi-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--texto);
+      margin-bottom: 0.4rem;
+    }
+    .lumi-desc {
+      color: var(--texto-suave);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .lumi-stars {
+      margin-top: 1.2rem;
+      display: flex; justify-content: center; gap: 0.3rem;
+      font-size: 1.1rem;
+    }
+
+    /* floating badges around card */
+    .badge-float {
+      position: absolute;
+      background: white;
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      white-space: nowrap;
+    }
+    .badge-float.b1 { top: 10%; left: -15%; animation: float 5s ease-in-out infinite; }
+    .badge-float.b2 { bottom: 20%; right: -12%; animation: float 6s ease-in-out infinite 1s; }
+    .badge-float.b3 { top: 65%; left: -18%; animation: float 4.5s ease-in-out infinite 0.5s; }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 6rem 4rem; }
+
+    .section-label {
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--lilas-deep); margin-bottom: 1rem;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      line-height: 1.2; margin-bottom: 1.2rem;
+    }
+    .section-sub {
+      color: var(--texto-suave); font-size: 1.05rem;
+      line-height: 1.7; max-width: 560px;
+    }
+
+    /* ── MISSÃO ── */
+    .missao {
+      background: var(--lilas-soft);
+      border-radius: 40px;
+      margin: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .missao-text { padding: 4rem; }
+    .missao-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--texto);
+      margin: 1.5rem 0;
+      padding-left: 1.5rem;
+      border-left: 4px solid var(--lilas-deep);
+    }
+
+    .missao-valores {
+      display: flex; flex-direction: column; gap: 1rem;
+      margin-top: 2rem;
+    }
+    .valor {
+      display: flex; align-items: center; gap: 1rem;
+      background: white; border-radius: 16px;
+      padding: 1rem 1.5rem;
+    }
+    .valor-icon { font-size: 1.4rem; }
+    .valor-text { font-size: 0.9rem; font-weight: 600; color: var(--texto); }
+
+    .missao-visual {
+      padding: 4rem 4rem 4rem 0;
+      display: flex; flex-direction: column; gap: 1.5rem;
+    }
+
+    .mini-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 20px rgba(155,127,204,0.1);
+    }
+    .mini-card-icon { font-size: 1.8rem; margin-bottom: 0.5rem; }
+    .mini-card-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.3rem; }
+    .mini-card-desc { font-size: 0.85rem; color: var(--texto-suave); line-height: 1.5; }
+
+    /* ── APP ── */
+    .app-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .app-mockup {
+      background: linear-gradient(145deg, var(--lilas-soft), var(--pessego-soft));
+      border-radius: 32px;
+      height: 420px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .app-mockup::after {
+      content: 'Em breve na App Store';
+      position: absolute; bottom: 1.5rem;
+      background: white;
+      border-radius: 50px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--lilas-deep);
+    }
+
+    .app-features {
+      display: flex; flex-direction: column; gap: 1.2rem;
+      margin: 2rem 0;
+    }
+    .app-feature {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .app-feature-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--lilas-deep);
+      margin-top: 6px; flex-shrink: 0;
+    }
+    .app-feature-text { font-size: 0.95rem; color: var(--texto-suave); line-height: 1.6; }
+    .app-feature-text strong { color: var(--texto); }
+
+    /* ── RECURSOS ── */
+    .recursos { background: var(--pessego-soft); border-radius: 40px; margin: 0 2rem; }
+    .recursos-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 4rem; }
+    .recursos-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .recurso-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .recurso-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+    .recurso-tag {
+      display: inline-block;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.3rem 0.8rem; border-radius: 50px;
+      margin-bottom: 1rem;
+    }
+    .tag-gratis { background: #E8F5E9; color: #388E3C; }
+    .tag-pago   { background: var(--lilas-soft); color: var(--lilas-deep); }
+    .recurso-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+    .recurso-title { font-weight: 700; margin-bottom: 0.5rem; }
+    .recurso-desc  { font-size: 0.88rem; color: var(--texto-suave); line-height: 1.6; }
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      max-width: 640px; margin: 0 auto;
+      text-align: center; padding: 6rem 2rem;
+    }
+    .newsletter .section-title { margin-bottom: 0.8rem; }
+    .newsletter .section-sub { margin: 0 auto 2rem; }
+
+    .nl-form {
+      display: flex; gap: 0.8rem;
+      background: white;
+      border: 2px solid var(--lilas);
+      border-radius: 50px;
+      padding: 0.4rem 0.4rem 0.4rem 1.5rem;
+      align-items: center;
+    }
+    .nl-form input {
+      flex: 1; border: none; outline: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem; color: var(--texto);
+      background: transparent;
+    }
+    .nl-form input::placeholder { color: var(--texto-suave); }
+    .nl-form button {
+      background: var(--lilas-deep); color: white;
+      border: none; border-radius: 50px;
+      padding: 0.75rem 1.5rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .nl-form button:hover { background: var(--texto); }
+    .nl-note {
+      font-size: 0.78rem; color: var(--texto-suave);
+      margin-top: 1rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--texto);
+      color: rgba(255,255,255,0.6);
+      padding: 3rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: white;
+      font-style: italic;
+    }
+    .footer-links { display: flex; gap: 2rem; list-style: none; }
+    .footer-links a {
+      text-decoration: none; color: rgba(255,255,255,0.5);
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: white; }
+    .footer-copy { font-size: 0.8rem; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; text-align: center; }
+      .hero-visual { display: none; }
+      .hero-actions { justify-content: center; }
+      section { padding: 4rem 1.5rem; }
+      .missao, .recursos { margin: 0; border-radius: 24px; }
+      .missao { grid-template-columns: 1fr; }
+      .missao-text, .missao-visual { padding: 2rem; }
+      .app-section { grid-template-columns: 1fr; gap: 2rem; }
+      .recursos-grid { grid-template-columns: 1fr; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>Missão</span> Lumi ✦</a>
+  <ul class="nav-links">
+    <li><a href="#missao">A Nossa Missão</a></li>
+    <li><a href="#app">A APP</a></li>
+    <li><a href="#recursos">Recursos</a></li>
+    <li><a href="#newsletter" class="nav-cta">Ficar a par</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-text">
+    <div class="hero-badge">✦ Aprender é uma aventura</div>
+    <h1 class="hero-title">
+      Onde a curiosidade<br>se torna <em>superpoder</em>
+    </h1>
+    <p class="hero-sub">
+      O Missão Lumi nasceu para transformar a aprendizagem numa aventura que as crianças pedem para repetir — e as famílias adoram acompanhar.
+    </p>
+    <div class="hero-actions">
+      <a href="#app" class="btn-primary">Descobrir a APP ✦</a>
+      <a href="#recursos" class="btn-secondary">Ver recursos</a>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div style="position:relative; width: 340px;">
+      <div class="badge-float b1">🌟 +200 desafios</div>
+      <div class="badge-float b2">🎮 Aprender jogando</div>
+      <div class="badge-float b3">💜 Para famílias</div>
+      <div class="lumi-card">
+        <div class="lumi-avatar">🌟</div>
+        <div class="lumi-name">Olá, sou a Lumi!</div>
+        <div class="lumi-desc">A tua companheira<br>de aventuras e aprendizagem</div>
+        <div class="lumi-stars">⭐⭐⭐⭐⭐</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSÃO -->
+<section id="missao" style="padding: 0 0 6rem;">
+  <div class="missao">
+    <div class="missao-text">
+      <div class="section-label">A nossa missão</div>
+      <h2 class="section-title">Acreditamos que aprender devia ser assim</h2>
+      <blockquote class="missao-quote">
+        "Tornar a aprendizagem uma aventura que crianças pedem para repetir."
+      </blockquote>
+      <p class="section-sub">
+        Criámos um espaço onde os recursos, a app e as ideias existem para apoiar — sem pressão, sem julgamento.
+      </p>
+      <div class="missao-valores">
+        <div class="valor"><div class="valor-icon">🌱</div><div class="valor-text">Aprendizagem ao ritmo de cada criança</div></div>
+        <div class="valor"><div class="valor-icon">🤝</div><div class="valor-text">Famílias e crianças, juntas na jornada</div></div>
+        <div class="valor"><div class="valor-icon">✨</div><div class="valor-text">Conteúdo com propósito, não com pressão</div></div>
+      </div>
+    </div>
+    <div class="missao-visual">
+      <div class="mini-card">
+        <div class="mini-card-icon">🎯</div>
+        <div class="mini-card-title">Desafio com propósito</div>
+        <div class="mini-card-desc">Cada jogo foi pensado para estimular a curiosidade real — não apenas passar o tempo.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">🧠</div>
+        <div class="mini-card-title">Aprendizagem que fica</div>
+        <div class="mini-card-desc">Conceitos apresentados de forma que faz sentido para cada idade e cada ritmo.</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-card-icon">💛</div>
+        <div class="mini-card-title">Feito com cuidado</div>
+        <div class="mini-card-desc">Cada recurso e funcionalidade existe por uma razão — ajudar, não entreter a seco.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP -->
+<section id="app">
+  <div class="app-section">
+    <div class="app-mockup">🌟</div>
+    <div>
+      <div class="section-label">A APP</div>
+      <h2 class="section-title">Missão Lumi — o jogo que ensina</h2>
+      <p class="section-sub">
+        A Lumi guia as crianças por missões e desafios que unem o prazer do jogo com aprendizagens reais. Os pais acompanham, as crianças pedem mais.
+      </p>
+      <div class="app-features">
+        <div class="app-feature">
+          <div class="app-feature-dot"></div>
+          <div class="app-feature-text"><strong>Missões progressivas</strong> — desafios que crescem com a criança, sem frustração.</div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-dot"></div>
+          <div class="app-feature-text"><strong>A Lumi como guia</strong> — uma personagem calorosa que acompanha cada passo.</div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-dot"></div>
+          <div class="app-feature-text"><strong>Painel para famílias</strong> — acompanha a jornada sem ser intrusivo.</div>
+        </div>
+        <div class="app-feature">
+          <div class="app-feature-dot"></div>
+          <div class="app-feature-text"><strong>Sem anúncios</strong> — um ambiente seguro e limpo para os mais novos.</div>
+        </div>
+      </div>
+      <a href="#newsletter" class="btn-primary">Ser notificada no lançamento</a>
+    </div>
+  </div>
+</section>
+
+<!-- RECURSOS -->
+<section id="recursos" style="padding: 0 0 6rem;">
+  <div class="recursos">
+    <div class="recursos-inner">
+      <div class="section-label">Recursos</div>
+      <h2 class="section-title">Materiais para o dia a dia</h2>
+      <p class="section-sub">Recursos pensados para famílias reais — alguns gratuitos, alguns com custo simbólico. Sempre com propósito.</p>
+      <div class="recursos-grid">
+        <div class="recurso-card">
+          <div class="recurso-tag tag-gratis">Gratuito</div>
+          <div class="recurso-icon">📋</div>
+          <div class="recurso-title">Guia de rotinas de aprendizagem</div>
+          <div class="recurso-desc">Um ponto de partida suave para criar hábitos de estudo sem stress em casa.</div>
+        </div>
+        <div class="recurso-card">
+          <div class="recurso-tag tag-gratis">Gratuito</div>
+          <div class="recurso-icon">🎨</div>
+          <div class="recurso-title">Fichas de atividades criativas</div>
+          <div class="recurso-desc">Páginas para imprimir e explorar com as crianças nos momentos livres.</div>
+        </div>
+        <div class="recurso-card">
+          <div class="recurso-tag tag-pago">Recurso</div>
+          <div class="recurso-icon">📚</div>
+          <div class="recurso-title">Caderno de aventuras Lumi</div>
+          <div class="recurso-desc">Um caderno de atividades completo para acompanhar a jornada da APP em papel.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="newsletter">
+    <div class="section-label">Comunidade</div>
+    <h2 class="section-title">Faz parte da jornada</h2>
+    <p class="section-sub">Novidades sobre a APP, recursos novos e ideias para famílias — sem spam, sem pressão. Só o que vale a pena.</p>
+    <div class="nl-form">
+      <input type="email" placeholder="O teu email" />
+      <button type="button">Quero saber mais</button>
+    </div>
+    <p class="nl-note">Sem spam. Podes sair quando quiseres. A sério. 💜</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Missão Lumi ✦</div>
+  <ul class="footer-links">
+    <li><a href="#">A Nossa Missão</a></li>
+    <li><a href="#">A APP</a></li>
+    <li><a href="#">Recursos</a></li>
+    <li><a href="#">Contacto</a></li>
+    <li><a href="#">Política de Privacidade</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Missão Lumi. Feito com 💜</div>
+</footer>
+
+</body>
+</html>
